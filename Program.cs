@@ -6,9 +6,14 @@ namespace c_
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            Console.WriteLine("I am making a change!");
-            Console.WriteLine("Testing my source control");
+            String Username, Password = string.Empty;
+            Console.WriteLine("Welcome to de Cruz Bank");
+            Console.WriteLine("Please create an account");
+            Console.WriteLine("Enter a username");
+            Username = Console.ReadLine();
+            Console.WriteLine("Enter a password");
+            Password = Console.ReadLine();
+            Console.WriteLine("Thank you " + Username + " your account was created.");
         }
     }
 }
