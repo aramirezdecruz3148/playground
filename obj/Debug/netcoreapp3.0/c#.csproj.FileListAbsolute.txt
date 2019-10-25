@@ -1,0 +1,11 @@
+/Users/alexandraramirez1/bootcamp1/myProjects/c#/bin/Debug/netcoreapp3.0/c#
+/Users/alexandraramirez1/bootcamp1/myProjects/c#/bin/Debug/netcoreapp3.0/c#.deps.json
+/Users/alexandraramirez1/bootcamp1/myProjects/c#/bin/Debug/netcoreapp3.0/c#.runtimeconfig.json
+/Users/alexandraramirez1/bootcamp1/myProjects/c#/bin/Debug/netcoreapp3.0/c#.runtimeconfig.dev.json
+/Users/alexandraramirez1/bootcamp1/myProjects/c#/bin/Debug/netcoreapp3.0/c#.dll
+/Users/alexandraramirez1/bootcamp1/myProjects/c#/bin/Debug/netcoreapp3.0/c#.pdb
+/Users/alexandraramirez1/bootcamp1/myProjects/c#/obj/Debug/netcoreapp3.0/c#.csprojAssemblyReference.cache
+/Users/alexandraramirez1/bootcamp1/myProjects/c#/obj/Debug/netcoreapp3.0/c#.AssemblyInfoInputs.cache
+/Users/alexandraramirez1/bootcamp1/myProjects/c#/obj/Debug/netcoreapp3.0/c#.AssemblyInfo.cs
+/Users/alexandraramirez1/bootcamp1/myProjects/c#/obj/Debug/netcoreapp3.0/c#.dll
+/Users/alexandraramirez1/bootcamp1/myProjects/c#/obj/Debug/netcoreapp3.0/c#.pdb
