@@ -29,7 +29,7 @@ namespace c_
           Console.WriteLine("Welcome " + Username + " you are logged in.");
           Console.WriteLine("To make an initial deposit, please enter the amount");
           var deposit = Console.ReadLine();
-          var actualDeposit = Int32.Parse(deposit);
+          var actualDeposit = Decimal.Parse(deposit);
           var newBalance = actualDeposit + Balance;
           Console.WriteLine("Thank you for your deposit, you now have " + newBalance + " in your account");
         }
