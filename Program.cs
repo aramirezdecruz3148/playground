@@ -6,8 +6,8 @@ namespace c_
   {
     static void Main(string[] args)
     {
-      String Username, Password = string.Empty;
-      Int32 Balance = 0;
+      String Username, Password = "";
+      var Balance = 0;
       Console.WriteLine("Welcome to de Cruz Bank");
       Console.WriteLine("Please create an account");
       Console.WriteLine("Enter a username");
