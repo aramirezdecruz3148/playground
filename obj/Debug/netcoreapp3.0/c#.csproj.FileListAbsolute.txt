@@ -9,3 +9,5 @@
 /Users/alexandraramirez1/bootcamp1/myProjects/c#/obj/Debug/netcoreapp3.0/c#.AssemblyInfo.cs
 /Users/alexandraramirez1/bootcamp1/myProjects/c#/obj/Debug/netcoreapp3.0/c#.dll
 /Users/alexandraramirez1/bootcamp1/myProjects/c#/obj/Debug/netcoreapp3.0/c#.pdb
+/Users/alexandraramirez1/bootcamp1/myProjects/c#/bin/Debug/netcoreapp3.0/Newtonsoft.Json.dll
+/Users/alexandraramirez1/bootcamp1/myProjects/c#/obj/Debug/netcoreapp3.0/c#.csproj.CopyComplete
