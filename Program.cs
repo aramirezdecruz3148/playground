@@ -65,16 +65,20 @@ namespace c_ {
       Console.WriteLine("4. Sign-out.");
       Console.WriteLine("Enter the number of the option you wish to select: ");
       Console.WriteLine("*************************************************");
+      Console.WriteLine("");
       action = Int32.Parse(Console.ReadLine());
       switch(action) {
         case 1:
         user.CheckBalance();
+        Console.WriteLine("");
         break;
         case 2:
         user.Deposit();
+        Console.WriteLine("");
         break;
         case 3:
         user.Withdrawl();
+        Console.WriteLine("");
         break;
         case 4:
         user.SignOut();
@@ -95,13 +99,16 @@ namespace c_ {
       Console.WriteLine("2. Sign-in to existing account.");
       Console.WriteLine("Enter the number of the option you wish to select: ");
       Console.WriteLine("*****************************************");
+      Console.WriteLine("");
       action = Int32.Parse(Console.ReadLine());
       switch(action) {
         case 1:
         user.CreateUser();
+        Console.WriteLine("");
         break;
         case 2:
         user.SigninUser();
+        Console.WriteLine("");
         menu.MainMenu();
         break;
       }
