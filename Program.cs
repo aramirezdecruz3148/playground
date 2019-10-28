@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace c_ {
-  public class Menu {
+  public class User {
     public string Username { get; set; }
     public int PinNumber { get; set; }
     public decimal InitialBalance { get; set; }
@@ -20,6 +20,7 @@ namespace c_ {
       var enteredName = Console.ReadLine();
       Console.WriteLine("Please enter your pin number: ");
       var enteredPin = Int32.Parse(Console.ReadLine());
+      //need to figure out why this statement no longer works
       if(enteredName == Username && enteredPin == PinNumber) {
       Console.WriteLine("Welcome back, {0}", Username);
       } else {
@@ -51,15 +52,73 @@ namespace c_ {
       Console.WriteLine("Thank you for choosing deCruz Bank, we hope to see you soon!");
     }
   }
+  public class OptionsMenu {
+    User user = new User();
+    public void MainMenu() {
+      int action = 0;
+      while (action != 4) {
+      Console.WriteLine("******** You are signed into deCruz Bank ********");
+      Console.WriteLine("Please choose from our menu of options...");
+      Console.WriteLine("1. Check balance.");
+      Console.WriteLine("2. Make a deposit.");
+      Console.WriteLine("3. Make a withdrawl.");
+      Console.WriteLine("4. Sign-out.");
+      Console.WriteLine("Enter the number of the option you wish to select: ");
+      Console.WriteLine("*************************************************");
+      action = Int32.Parse(Console.ReadLine());
+      switch(action) {
+        case 1:
+        user.CheckBalance();
+        break;
+        case 2:
+        user.Deposit();
+        break;
+        case 3:
+        user.Withdrawl();
+        break;
+        case 4:
+        user.SignOut();
+        break;
+      }
+      }
+    }
+  }
+  public class EntryMenu {
+    User user = new User();
+    OptionsMenu menu = new OptionsMenu();
+    public void SignUpIn() {
+      int action = 0;
+      while (action != 2) {
+      Console.WriteLine("******** Welcome to deCruz Bank! ********");
+      Console.WriteLine("Please choose from our menu of options...");
+      Console.WriteLine("1. Create user account.");
+      Console.WriteLine("2. Sign-in to existing account.");
+      Console.WriteLine("Enter the number of the option you wish to select: ");
+      Console.WriteLine("*****************************************");
+      action = Int32.Parse(Console.ReadLine());
+      switch(action) {
+        case 1:
+        user.CreateUser();
+        break;
+        case 2:
+        user.SigninUser();
+        menu.MainMenu();
+        break;
+      }
+      }
+    }
+  }
   class Program {
     static void Main(string[] args) {
-      Menu user = new Menu();
-      user.CreateUser();
-      user.SigninUser();
-      user.CheckBalance();
-      user.Deposit();
-      user.Withdrawl();
-      user.SignOut();
+      // User user = new User();
+      // user.CreateUser();
+      // user.SigninUser();
+      // user.CheckBalance();
+      // user.Deposit();
+      // user.Withdrawl();
+      // user.SignOut();
+      EntryMenu menu = new EntryMenu();
+      menu.SignUpIn();
     }
   }
 }
