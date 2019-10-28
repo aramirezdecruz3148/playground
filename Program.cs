@@ -19,15 +19,15 @@ namespace c_ {
       Console.WriteLine("Welcome to deCruz Bank, to sign-in, please enter your username: ");
       var enteredName = Console.ReadLine();
       Console.WriteLine("Please enter your pin number: ");
-      var enteredPin = Int32.Parse(Console.ReadLine());
-      //need to figure out why this statement no longer works
-      if(enteredName == Username && enteredPin == PinNumber) {
+      string pass = "";
+      ConsoleKeyInfo enteredPin;
+      do {
+        enteredPin = Console.ReadKey(true);
+        pass += enteredPin.KeyChar;
+        Console.Write("*");
+      } while (enteredPin.Key != ConsoleKey.Enter);
+      //will need to add logic here to ensure username and password match created user
       Console.WriteLine("Welcome back, {0}", Username);
-      } else {
-        Console.WriteLine("I'm sorry, either your username or pin number were incorrect.");
-        Console.WriteLine("Please try again...");
-      }
-      Console.Clear();
     }
     public void CheckBalance() {
       Console.WriteLine("The balance for {0}, is ${1}", Username, InitialBalance);
