@@ -132,20 +132,28 @@ namespace c_ {
   }
   class Program {
     static void Main(string[] args) {
-     JSONUserObj test = new JSONUserObj();
-     List<BankTransaction> test2 = new List<BankTransaction>();
-     test2.Add(new BankTransaction { Amount = 4, Type = "Deposit" });
-     test2.Add(new BankTransaction { Amount = 5, Type = "Withdrawl" });
+    //  JSONUserObj test = new JSONUserObj();
+    //  List<BankTransaction> test2 = new List<BankTransaction>();
+    //  test2.Add(new BankTransaction { Amount = 4, Type = "Deposit" });
+    //  test2.Add(new BankTransaction { Amount = 5, Type = "Withdrawl" });
 
-     {
-       test.Username = "Username";
-       test.BankTransaction = test2;
-     }
-     File.WriteAllText(@"c:\bank.json", JsonConvert.SerializeObject(test));
-     using (StreamWriter file = File.CreateText(@"c:\bank.json"))
+    //  {
+    //    test.Username = "Username";
+    //    test.BankTransaction = test2;
+    //  }
+    //  File.WriteAllText(@"c:\bank.json", JsonConvert.SerializeObject(test));
+    //  using (StreamWriter file = File.CreateText(@"c:\bank.json"))
+    //   {
+    //       JsonSerializer serializer = new JsonSerializer();
+    //       serializer.Serialize(file, test);
+    //   }
+      JSONUserObj test = JsonConvert.DeserializeObject<JSONUserObj>(File.ReadAllText(@"c:\bank.json"));
+      using (StreamReader file = File.OpenText(@"c:\bank.json"))
       {
           JsonSerializer serializer = new JsonSerializer();
-          serializer.Serialize(file, test);
+          JSONUserObj test2 = (JSONUserObj)serializer.Deserialize(file, typeof(JSONUserObj));
+          Console.WriteLine(test2.Username);
+          Console.WriteLine(test2.BankTransaction[1].Amount);
       }
     }
   }
