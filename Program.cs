@@ -135,6 +135,8 @@ namespace c_ {
      JSONUserObj test = new JSONUserObj();
      List<BankTransaction> test2 = new List<BankTransaction>();
      test2.Add(new BankTransaction { Amount = 4, Type = "Deposit" });
+     test2.Add(new BankTransaction { Amount = 5, Type = "Withdrawl" });
+
      {
        test.Username = "Username";
        test.BankTransaction = test2;
