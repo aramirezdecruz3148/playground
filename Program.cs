@@ -1,6 +1,21 @@
 ﻿using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Runtime.Serialization.Json;
+using System.Globalization;
+using Newtonsoft.Json;
 
 namespace c_ {
+  public struct BankTransaction {
+    public int Amount { get; set; }
+    public string Type { get; set; }
+  }
+  
+  public struct JSONUserObj {
+    public string Username { get; set; }
+    public List<BankTransaction> BankTransaction { get; set; }
+  }
+
   public class User {
     public string Username { get; set; }
     public int PinNumber { get; set; }
@@ -117,15 +132,19 @@ namespace c_ {
   }
   class Program {
     static void Main(string[] args) {
-      // User user = new User();
-      // user.CreateUser();
-      // user.SigninUser();
-      // user.CheckBalance();
-      // user.Deposit();
-      // user.Withdrawl();
-      // user.SignOut();
-      EntryMenu menu = new EntryMenu();
-      menu.SignUpIn();
+     JSONUserObj test = new JSONUserObj();
+     List<BankTransaction> test2 = new List<BankTransaction>();
+     test2.Add(new BankTransaction { Amount = 4, Type = "Deposit" });
+     {
+       test.Username = "Username";
+       test.BankTransaction = test2;
+     }
+     File.WriteAllText(@"c:\bank.json", JsonConvert.SerializeObject(test));
+     using (StreamWriter file = File.CreateText(@"c:\bank.json"))
+      {
+          JsonSerializer serializer = new JsonSerializer();
+          serializer.Serialize(file, test);
+      }
     }
   }
 }
