@@ -7,8 +7,8 @@ using Newtonsoft.Json;
 
 namespace c_ {
   public struct BankTransaction {
-    public int Amount { get; set; }
-    public string Type { get; set; }
+    public decimal Amount { get; set; }
+    public decimal Balance { get; set; }
   }
   
   public struct JSONUserObj {
@@ -20,6 +20,16 @@ namespace c_ {
     public string Username { get; set; }
     public int PinNumber { get; set; }
     public decimal InitialBalance { get; set; }
+    public List<BankTransaction> BankTransaction { get; set; }
+
+    public User() { //can probably take this out once ammend all methods
+    }
+
+    public User(string username, int pinNumber, decimal initialBalance) {
+      Username = username;
+      PinNumber = pinNumber;
+      InitialBalance = initialBalance;
+    }
     public void CreateUser() {
       Console.WriteLine("To begin banking please create an account...");
       Console.WriteLine("Enter a username: ");
@@ -28,30 +38,68 @@ namespace c_ {
       PinNumber = Int32.Parse(Console.ReadLine());
       Console.WriteLine("Enter your initial deposit amount for your new account: ");
       InitialBalance = Decimal.Parse(Console.ReadLine());
+      User createdUser = new User(Username, PinNumber, InitialBalance);
+       File.WriteAllText(@"c:\bank.json", JsonConvert.SerializeObject(createdUser));
+     using (StreamWriter file = File.CreateText(@"c:\bank.json"))
+      {
+          JsonSerializer serializer = new JsonSerializer();
+          serializer.Serialize(file, createdUser);
+      }
       Console.Clear();
     }
+
     public void SigninUser() {
       Console.WriteLine("Welcome to deCruz Bank, to sign-in, please enter your username: ");
       var enteredName = Console.ReadLine();
       Console.WriteLine("Please enter your pin number: ");
-      string pass = "";
-      ConsoleKeyInfo enteredPin;
-      do {
-        enteredPin = Console.ReadKey(true);
-        pass += enteredPin.KeyChar;
-        Console.Write("*");
-      } while (enteredPin.Key != ConsoleKey.Enter);
-      //will need to add logic here to ensure username and password match created user
+      var enteredPin = Int32.Parse(Console.ReadLine());
+      User user = JsonConvert.DeserializeObject<User>(File.ReadAllText(@"c:\bank.json"));
+      using (StreamReader file = File.OpenText(@"c:\bank.json"))
+      {
+          JsonSerializer serializer = new JsonSerializer();
+          User recordedUser = (User)serializer.Deserialize(file, typeof(User));
+      if(recordedUser.Username == enteredName && recordedUser.PinNumber == enteredPin) {
+      Console.WriteLine("");
       Console.WriteLine("Welcome back, {0}", Username);
+        } else {
+          Console.WriteLine("");
+          Console.WriteLine("I'm sorry, your username or password did not match our records, please try again...");
+        }
+      }
     }
+
     public void CheckBalance() {
+      //this will need to change after I create the logic for the deposit/withdrawl methods
+      User test = new User(Username, PinNumber, InitialBalance);
       Console.WriteLine("The balance for {0}, is ${1}", Username, InitialBalance);
+    }
+
+    public void AddToList(decimal amount, decimal balance) {
+      List<BankTransaction> transaction = new List<BankTransaction>();
+      transaction.Add(new BankTransaction { Amount = amount, Balance = balance });
     }
     public void Deposit() {
       Console.WriteLine("Please enter the amount you wish to deposit: ");
       var deposit = Decimal.Parse(Console.ReadLine());
-      InitialBalance += deposit;
-      Console.WriteLine("Thank you, after your deposit you have ${0} in your account.", InitialBalance);
+      AddToList(deposit, deposit);
+      Console.Write("done");
+      // List<BankTransaction> transaction = new List<BankTransaction>();
+      // if(transaction.Count == 0) {
+      //     AddToList(deposit, deposit);
+      //     Console.WriteLine("Thank you, after your deposit you have ${0} in your account.", deposit);
+      // }
+        // } else {
+        //   User user = JsonConvert.DeserializeObject<User>(File.ReadAllText(@"c:\bank.json"));
+        //   using (StreamReader file = File.OpenText(@"c:\bank.json"))
+        //   {
+        //       JsonSerializer serializer = new JsonSerializer();
+        //       User recordedUser = (User)serializer.Deserialize(file, typeof(User));
+        //       var currentBalance = recordedUser.BankTransaction[BankTransaction.Count - 1].Balance;
+        //       var newBalance = currentBalance + deposit;
+        //       Console.WriteLine("Thank you, after your deposit you have ${0} in your account.", newBalance);
+        //   }
+        //   AddToList(deposit, newBalance);
+        // }
     }
     public void Withdrawl() {
       Console.WriteLine("Please enter the amount you would like to withdraw: ");
@@ -147,20 +195,24 @@ namespace c_ {
     //       JsonSerializer serializer = new JsonSerializer();
     //       serializer.Serialize(file, test);
     //   }
-      JSONUserObj test = JsonConvert.DeserializeObject<JSONUserObj>(File.ReadAllText(@"c:\bank.json"));
-      using (StreamReader file = File.OpenText(@"c:\bank.json"))
-      {
-          JsonSerializer serializer = new JsonSerializer();
-          JSONUserObj test2 = (JSONUserObj)serializer.Deserialize(file, typeof(JSONUserObj));
-          Console.WriteLine(test2.Username);
-          for(var i = 0; i < test2.BankTransaction.Count; i++) {
-            Console.WriteLine("***********");
-            Console.WriteLine("Type: {0}", test2.BankTransaction[i].Type);
-            Console.WriteLine("Amount: {0}", test2.BankTransaction[i].Amount);
-          }
-      }
+    //*************************
+    //above is an example of writing to the file, below is reading
+      // JSONUserObj test = JsonConvert.DeserializeObject<JSONUserObj>(File.ReadAllText(@"c:\bank.json"));
+      // using (StreamReader file = File.OpenText(@"c:\bank.json"))
+      // {
+      //     JsonSerializer serializer = new JsonSerializer();
+      //     JSONUserObj test2 = (JSONUserObj)serializer.Deserialize(file, typeof(JSONUserObj));
+      //     Console.WriteLine(test2.Username);
+      //     for(var i = 0; i < test2.BankTransaction.Count; i++) {
+      //       Console.WriteLine("***********");
+      //       Console.WriteLine("Type: {0}", test2.BankTransaction[i].Type);
+      //       Console.WriteLine("Amount: {0}", test2.BankTransaction[i].Amount);
+      //     }
+      // }
+      User test = new User();
+      // test.CreateUser();
+      // test.SigninUser();
+      test.Deposit();
     }
   }
 }
-//figure out how to loop through the transactions
-//figure out how to structure them so they each have some space and deliniation
