@@ -153,8 +153,14 @@ namespace c_ {
           JsonSerializer serializer = new JsonSerializer();
           JSONUserObj test2 = (JSONUserObj)serializer.Deserialize(file, typeof(JSONUserObj));
           Console.WriteLine(test2.Username);
-          Console.WriteLine(test2.BankTransaction[1].Amount);
+          for(var i = 0; i < test2.BankTransaction.Count; i++) {
+            Console.WriteLine("***********");
+            Console.WriteLine("Type: {0}", test2.BankTransaction[i].Type);
+            Console.WriteLine("Amount: {0}", test2.BankTransaction[i].Amount);
+          }
       }
     }
   }
 }
+//figure out how to loop through the transactions
+//figure out how to structure them so they each have some space and deliniation
