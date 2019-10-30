@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Runtime.Serialization.Json;
 using System.Globalization;
 using Newtonsoft.Json;
+using System.Xml;
+using System.Text;
 
 namespace c_ {
   public struct BankTransaction {
@@ -83,23 +85,6 @@ namespace c_ {
       var deposit = Decimal.Parse(Console.ReadLine());
       AddToList(deposit, deposit);
       Console.Write("done");
-      // List<BankTransaction> transaction = new List<BankTransaction>();
-      // if(transaction.Count == 0) {
-      //     AddToList(deposit, deposit);
-      //     Console.WriteLine("Thank you, after your deposit you have ${0} in your account.", deposit);
-      // }
-        // } else {
-        //   User user = JsonConvert.DeserializeObject<User>(File.ReadAllText(@"c:\bank.json"));
-        //   using (StreamReader file = File.OpenText(@"c:\bank.json"))
-        //   {
-        //       JsonSerializer serializer = new JsonSerializer();
-        //       User recordedUser = (User)serializer.Deserialize(file, typeof(User));
-        //       var currentBalance = recordedUser.BankTransaction[BankTransaction.Count - 1].Balance;
-        //       var newBalance = currentBalance + deposit;
-        //       Console.WriteLine("Thank you, after your deposit you have ${0} in your account.", newBalance);
-        //   }
-        //   AddToList(deposit, newBalance);
-        // }
     }
     public void Withdrawl() {
       Console.WriteLine("Please enter the amount you would like to withdraw: ");
@@ -180,39 +165,132 @@ namespace c_ {
   }
   class Program {
     static void Main(string[] args) {
-    //  JSONUserObj test = new JSONUserObj();
-    //  List<BankTransaction> test2 = new List<BankTransaction>();
-    //  test2.Add(new BankTransaction { Amount = 4, Type = "Deposit" });
-    //  test2.Add(new BankTransaction { Amount = 5, Type = "Withdrawl" });
+      //creation of the file and the root element
+      // XmlTextWriter BankDatabase;
+      // BankDatabase = new XmlTextWriter(@"c:\BankDatabase.xml", Encoding.UTF8);
+      // BankDatabase.WriteStartDocument();
+      // BankDatabase.WriteStartElement("BankDatabase"); 
+      // BankDatabase.WriteEndElement();
+      // BankDatabase.Close();
 
-    //  {
-    //    test.Username = "Username";
-    //    test.BankTransaction = test2;
-    //  }
-    //  File.WriteAllText(@"c:\bank.json", JsonConvert.SerializeObject(test));
-    //  using (StreamWriter file = File.CreateText(@"c:\bank.json"))
-    //   {
-    //       JsonSerializer serializer = new JsonSerializer();
-    //       serializer.Serialize(file, test);
-    //   }
-    //*************************
-    //above is an example of writing to the file, below is reading
-      // JSONUserObj test = JsonConvert.DeserializeObject<JSONUserObj>(File.ReadAllText(@"c:\bank.json"));
-      // using (StreamReader file = File.OpenText(@"c:\bank.json"))
-      // {
-      //     JsonSerializer serializer = new JsonSerializer();
-      //     JSONUserObj test2 = (JSONUserObj)serializer.Deserialize(file, typeof(JSONUserObj));
-      //     Console.WriteLine(test2.Username);
-      //     for(var i = 0; i < test2.BankTransaction.Count; i++) {
-      //       Console.WriteLine("***********");
-      //       Console.WriteLine("Type: {0}", test2.BankTransaction[i].Type);
-      //       Console.WriteLine("Amount: {0}", test2.BankTransaction[i].Amount);
-      //     }
+      //adding information to the file database
+      //I can see making a method that takes the necessary strings
+      //then this code is inside*************
+      // XmlDocument baseInfo = new XmlDocument();
+      // FileStream database = new FileStream(@"c:\BankDatabase.xml", FileMode.Open);
+      // baseInfo.Load(database);
+      // XmlElement user = baseInfo.CreateElement("User");
+      // user.SetAttribute("username", "aramirez");
+      // XmlElement userName = baseInfo.CreateElement("Username");
+      // XmlText userNameText = baseInfo.CreateTextNode("aramirez");
+      // XmlElement nickName = baseInfo.CreateElement("NickName");
+      // XmlText nickNameText = baseInfo.CreateTextNode("Alex");
+      // XmlElement pinNumber = baseInfo.CreateElement("PinNumber");
+      // XmlText pinNumberText = baseInfo.CreateTextNode("1234");
+      // userName.AppendChild(userNameText);
+      // nickName.AppendChild(nickNameText);
+      // pinNumber.AppendChild(pinNumberText);
+      // user.AppendChild(userName);
+      // user.AppendChild(nickName);
+      // user.AppendChild(pinNumber);
+      // baseInfo.DocumentElement.AppendChild(user);
+      // database.Close();
+      // baseInfo.Save(@"c:\BankDatabase.xml");
+      
+      //adding transactions to the file
+      //this could also be its own method
+      //first need to read to get the correct element to append******
+      // XmlDocument baseInfo = new XmlDocument();
+      // FileStream database = new FileStream(@"c:\BankDatabase.xml", FileMode.Open);
+      // baseInfo.Load(database);
+      // var list = baseInfo.GetElementsByTagName("User");
+      // for(var i = 0; i < list.Count; i++) {
+      //   XmlElement user = (XmlElement)baseInfo.GetElementsByTagName("User")[i];
+      //   if(user.GetAttribute("username") == "aramirez") {
+      //     XmlElement transaction = baseInfo.CreateElement("Transaction");
+      //     transaction.SetAttribute("type", "deposited");
+      //     XmlElement amount = baseInfo.CreateElement("Amount");
+      //     XmlText amountText = baseInfo.CreateTextNode("50.00");
+      //     XmlElement balance = baseInfo.CreateElement("Balance");
+      //     XmlText balanceText = baseInfo.CreateTextNode("100.00");
+      //     amount.AppendChild(amountText);
+      //     balance.AppendChild(balanceText);
+      //     transaction.AppendChild(amount);
+      //     transaction.AppendChild(balance);
+      //     list[0].AppendChild(transaction);
+      //     baseInfo.Save(@"c:\BankDatabase.xml");
+      //     break;
+      //   }
       // }
-      User test = new User();
-      // test.CreateUser();
-      // test.SigninUser();
-      test.Deposit();
+      // database.Close();
+
+      //for reading userinfo from the database
+      //could be its own method****************
+      // XmlDocument baseInfo = new XmlDocument();
+      // FileStream database = new FileStream(@"c:\BankDatabase.xml", FileMode.Open);
+      // baseInfo.Load(database);
+      // var list = baseInfo.GetElementsByTagName("User");
+      // for(var i = 0; i < list.Count; i++) {
+      //   XmlElement user = (XmlElement)baseInfo.GetElementsByTagName("User")[i];
+      //   XmlElement userName = (XmlElement)baseInfo.GetElementsByTagName("Username")[i];
+      //   XmlElement nickName = (XmlElement)baseInfo.GetElementsByTagName("NickName")[i];
+      //   XmlElement pinNumber = (XmlElement)baseInfo.GetElementsByTagName("PinNumber")[i];
+      //   if(user.GetAttribute("username") == "aramirez") {
+      //     Console.WriteLine(userName.InnerText);
+      //     Console.WriteLine(nickName.InnerText);
+      //     Console.WriteLine(pinNumber.InnerText);
+      //     break;
+      //   }
+      // }
+      // database.Close();
+
+
+      //for reading latest transaction info from database
+      //could be its own method****************
+      // XmlDocument baseInfo = new XmlDocument();
+      // FileStream database = new FileStream(@"c:\BankDatabase.xml", FileMode.Open);
+      // baseInfo.Load(database);
+      // var list = baseInfo.GetElementsByTagName("User");
+      // for(var i = 0; i < list.Count; i++) {
+      //   XmlElement user = (XmlElement)baseInfo.GetElementsByTagName("User")[i];
+      //   if(user.GetAttribute("username") == "aramirez") {
+      //     var balanceList = baseInfo.GetElementsByTagName("Balance");
+      //     var lastBalance = balanceList[balanceList.Count - 1];
+      //     Console.WriteLine(lastBalance.InnerText);
+      //     break;
+      //   }
+      // }
+      // database.Close();
+
+
+      //for reading all transaction info from database
+      //could be its own method****************
+      // Console.WriteLine("Here is your transaction history: ");
+      // Console.WriteLine("**********************************");
+      // XmlDocument baseInfo = new XmlDocument();
+      // FileStream database = new FileStream(@"c:\BankDatabase.xml", FileMode.Open);
+      // baseInfo.Load(database);
+      // var list = baseInfo.GetElementsByTagName("User");
+      // for(int i = 0; i < list.Count; i++) {
+      //   XmlElement user = (XmlElement)baseInfo.GetElementsByTagName("User")[i];
+      //   if(user.GetAttribute("username") == "aramirez") {
+      //     var transactionList = baseInfo.GetElementsByTagName("Transaction");
+      //     if(transactionList.Count == 0) {
+      //       Console.WriteLine("You have no transactions in our records, why not make some!");
+      //     }
+      //     for(var j = 0; j < transactionList.Count; j++) {
+      //       XmlElement transaction = (XmlElement)baseInfo.GetElementsByTagName("Transaction")[j];
+      //       var transactionType = transaction.GetAttribute("type");
+      //       XmlElement amount = (XmlElement)baseInfo.GetElementsByTagName("Amount")[j];
+      //       XmlElement balance = (XmlElement)baseInfo.GetElementsByTagName("Balance")[j];
+      //       Console.WriteLine("Amount {0}: ${1}", transactionType, amount.InnerText);
+      //       Console.WriteLine("Balance: ${0}", balance.InnerText);
+      //       Console.WriteLine("**********************************");
+      //     }
+      //     break;
+      //   }
+      // }
+      // database.Close();
     }
   }
 }
