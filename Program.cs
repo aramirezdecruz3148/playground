@@ -8,45 +8,59 @@ using System.Xml;
 using System.Text;
 
 namespace c_ {
-  public struct BankTransaction {
-    public decimal Amount { get; set; }
-    public decimal Balance { get; set; }
-  }
-  
-  public struct JSONUserObj {
-    public string Username { get; set; }
-    public List<BankTransaction> BankTransaction { get; set; }
-  }
-
+ 
   public class User {
     public string Username { get; set; }
-    public int PinNumber { get; set; }
-    public decimal InitialBalance { get; set; }
-    public List<BankTransaction> BankTransaction { get; set; }
+    public string NickName { get; set; }
+    public string PinNumber { get; set; }
+    public string Balance { get; set; }
+    public string Amount { get; set; }
+    public string Type { get; set; }
 
     public User() { //can probably take this out once ammend all methods
     }
-
-    public User(string username, int pinNumber, decimal initialBalance) {
-      Username = username;
-      PinNumber = pinNumber;
-      InitialBalance = initialBalance;
+    public void CreateDatabase() {
+      XmlTextWriter BankDatabase;
+      BankDatabase = new XmlTextWriter(@"c:\BankDatabase.xml", Encoding.UTF8);
+      BankDatabase.WriteStartDocument();
+      BankDatabase.WriteStartElement("BankDatabase"); 
+      BankDatabase.WriteEndElement();
+      BankDatabase.Close();
     }
+
+    public void AddUserToDatabase(string clientUsername, string clientNickname, string clientPinNumber) {
+      XmlDocument baseInfo = new XmlDocument();
+      FileStream database = new FileStream(@"c:\BankDatabase.xml", FileMode.Open);
+      baseInfo.Load(database);
+      XmlElement user = baseInfo.CreateElement("User");
+      user.SetAttribute("username", clientUsername);
+      XmlElement userName = baseInfo.CreateElement("Username");
+      XmlText userNameText = baseInfo.CreateTextNode(clientUsername);
+      XmlElement nickName = baseInfo.CreateElement("NickName");
+      XmlText nickNameText = baseInfo.CreateTextNode(clientNickname);
+      XmlElement pinNumber = baseInfo.CreateElement("PinNumber");
+      XmlText pinNumberText = baseInfo.CreateTextNode(clientPinNumber);
+      userName.AppendChild(userNameText);
+      nickName.AppendChild(nickNameText);
+      pinNumber.AppendChild(pinNumberText);
+      user.AppendChild(userName);
+      user.AppendChild(nickName);
+      user.AppendChild(pinNumber);
+      baseInfo.DocumentElement.AppendChild(user);
+      database.Close();
+      baseInfo.Save(@"c:\BankDatabase.xml");
+    }
+
     public void CreateUser() {
       Console.WriteLine("To begin banking please create an account...");
       Console.WriteLine("Enter a username: ");
       Username = Console.ReadLine();
+      Console.WriteLine("Enter a nickname we can refer to you by: ");
+      NickName = Console.ReadLine();
       Console.WriteLine("Enter a 4 digit pin number: ");
-      PinNumber = Int32.Parse(Console.ReadLine());
-      Console.WriteLine("Enter your initial deposit amount for your new account: ");
-      InitialBalance = Decimal.Parse(Console.ReadLine());
-      User createdUser = new User(Username, PinNumber, InitialBalance);
-       File.WriteAllText(@"c:\bank.json", JsonConvert.SerializeObject(createdUser));
-     using (StreamWriter file = File.CreateText(@"c:\bank.json"))
-      {
-          JsonSerializer serializer = new JsonSerializer();
-          serializer.Serialize(file, createdUser);
-      }
+      PinNumber = Console.ReadLine();
+      CreateDatabase();
+      AddUserToDatabase(Username, NickName, PinNumber);
       Console.Clear();
     }
 
@@ -54,47 +68,61 @@ namespace c_ {
       Console.WriteLine("Welcome to deCruz Bank, to sign-in, please enter your username: ");
       var enteredName = Console.ReadLine();
       Console.WriteLine("Please enter your pin number: ");
-      var enteredPin = Int32.Parse(Console.ReadLine());
-      User user = JsonConvert.DeserializeObject<User>(File.ReadAllText(@"c:\bank.json"));
-      using (StreamReader file = File.OpenText(@"c:\bank.json"))
-      {
-          JsonSerializer serializer = new JsonSerializer();
-          User recordedUser = (User)serializer.Deserialize(file, typeof(User));
-      if(recordedUser.Username == enteredName && recordedUser.PinNumber == enteredPin) {
-      Console.WriteLine("");
-      Console.WriteLine("Welcome back, {0}", Username);
-        } else {
+      var enteredPin = Console.ReadLine();
+      XmlDocument baseInfo = new XmlDocument();
+      FileStream database = new FileStream(@"c:\BankDatabase.xml", FileMode.Open);
+      baseInfo.Load(database);
+      var list = baseInfo.GetElementsByTagName("User");
+      for(var i = 0; i < list.Count; i++) {
+        XmlElement user = (XmlElement)baseInfo.GetElementsByTagName("User")[i];
+        XmlElement nickName = (XmlElement)baseInfo.GetElementsByTagName("NickName")[i];
+        if(user.GetAttribute("username") == enteredName) {
           Console.WriteLine("");
-          Console.WriteLine("I'm sorry, your username or password did not match our records, please try again...");
+          Console.WriteLine("Welcome back, {0}", nickName.InnerText);
+          break;
+        } else {
+           Console.WriteLine("");
+           Console.WriteLine("I'm sorry, your information did not match our records, please try again...");
         }
       }
+      database.Close();
     }
 
     public void CheckBalance() {
-      //this will need to change after I create the logic for the deposit/withdrawl methods
-      User test = new User(Username, PinNumber, InitialBalance);
-      Console.WriteLine("The balance for {0}, is ${1}", Username, InitialBalance);
+      XmlDocument baseInfo = new XmlDocument();
+      FileStream database = new FileStream(@"c:\BankDatabase.xml", FileMode.Open);
+      baseInfo.Load(database);
+      var list = baseInfo.GetElementsByTagName("User");
+      for(var i = 0; i < list.Count; i++) {
+        XmlElement user = (XmlElement)baseInfo.GetElementsByTagName("User")[i];
+        if(user.GetAttribute("username") == "aramirez") {
+          var balanceList = baseInfo.GetElementsByTagName("Balance");
+          if(balanceList.Count == 0) {
+            Console.WriteLine("Your balance is $0, why not add some cash?");
+          } else {
+          var lastBalance = balanceList[balanceList.Count - 1];
+            Console.WriteLine("Your balance is ${0}", lastBalance.InnerText);
+          }
+          break;
+        }
+      }
+      database.Close();
     }
 
-    public void AddToList(decimal amount, decimal balance) {
-      List<BankTransaction> transaction = new List<BankTransaction>();
-      transaction.Add(new BankTransaction { Amount = amount, Balance = balance });
-    }
     public void Deposit() {
       Console.WriteLine("Please enter the amount you wish to deposit: ");
       var deposit = Decimal.Parse(Console.ReadLine());
-      AddToList(deposit, deposit);
       Console.Write("done");
     }
     public void Withdrawl() {
       Console.WriteLine("Please enter the amount you would like to withdraw: ");
       var withdrawl = Decimal.Parse(Console.ReadLine());
-      if(withdrawl > InitialBalance) {
-        Console.WriteLine("I'm sorry, you have insufficient funds for that transaction.");
-      } else {
-        InitialBalance -= withdrawl;
-        Console.WriteLine("Thank you, after your withdrawl you have ${0} in your account.", InitialBalance);
-      }
+      // if(withdrawl > InitialBalance) {
+      //   Console.WriteLine("I'm sorry, you have insufficient funds for that transaction.");
+      // } else {
+      //   InitialBalance -= withdrawl;
+      //   Console.WriteLine("Thank you, after your withdrawl you have ${0} in your account.", InitialBalance);
+      // }
     }
     public void SignOut() {
       Console.WriteLine("Thank you for choosing deCruz Bank, we hope to see you soon!");
@@ -165,6 +193,8 @@ namespace c_ {
   }
   class Program {
     static void Main(string[] args) {
+      User user = new User();
+      user.CheckBalance();
       //creation of the file and the root element
       // XmlTextWriter BankDatabase;
       // BankDatabase = new XmlTextWriter(@"c:\BankDatabase.xml", Encoding.UTF8);
